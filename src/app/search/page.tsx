@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { SearchResultsClient } from "./SearchResultsClient";
 
 export const metadata = {
-  title: "Search Worship Songs — WeWorship",
+  title: "Search Worship Songs — Worship Mount",
   description: "Search gospel song lyrics and chords in Kannada, Tamil, Malayalam, Telugu, Hindi, and English.",
 };
 

@@ -2,11 +2,12 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { SearchBar } from "@/components/search/SearchBar";
 import { SongCard } from "@/components/browse/SongCard";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "WeWorship — Gospel Lyrics & Chords",
+export const metadata: Metadata = {
+  title: "Worship Mount — Gospel Lyrics & Chords",
   description:
-    "Browse gospel song lyrics and chords in Kannada, Tamil, Malayalam, Telugu, Hindi, and English. Transpose chords, enter presentation mode, and download PowerPoint slides.",
+    "Discover multilingual gospel lyrics and chords in Kannada, Tamil, Telugu, Malayalam, Hindi, and English with auto-transpose, presentation mode, and slide generation.",
 };
 
 const LANGUAGES = [

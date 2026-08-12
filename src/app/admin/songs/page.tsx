@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AdminSongTable } from "@/components/admin/AdminSongTable";
 
 export const metadata = {
-  title: "Song Management — Admin | WeWorship",
+  title: "Song Management — Admin | Worship Mount",
 };
 
 export default async function AdminSongsPage() {

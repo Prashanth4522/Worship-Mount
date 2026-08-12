@@ -81,7 +81,7 @@ export async function generateMetadata({
       title,
       description: config.description,
       url: canonicalUrl,
-      siteName: "WeWorship",
+      siteName: "Worship Mount",
     },
     twitter: {
       card: "summary_large_image",

@@ -60,11 +60,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
-              <div className="w-9 h-9 rounded-xl bg-[var(--color-accent)] flex items-center justify-center shadow-md shadow-red-500/20 group-hover:bg-[var(--color-accent-hover)] transition-colors">
+              <div className="w-9 h-9 rounded-xl bg-orange-500 flex items-center justify-center shadow-md shadow-orange-500/20 group-hover:bg-orange-600 transition-colors">
                 <span className="text-white font-black text-lg">W</span>
               </div>
               <span className="text-lg font-black tracking-tight text-[var(--color-primary)] hidden sm:inline">
-                We<span className="text-[var(--color-accent)]">Worship</span>
+                Worship<span className="text-orange-500">Mount</span>
               </span>
             </Link>
 
@@ -75,18 +75,25 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
             {/* Navigation Links */}
             <div className="flex items-center gap-1 overflow-x-auto">
-              {NAV_LANGUAGES.map((link) => (
+              {[
+                { label: "Kannada", href: "/languages/kannada" },
+                { label: "Tamil", href: "/languages/tamil" },
+                { label: "Telugu", href: "/languages/telugu" },
+                { label: "Malayalam", href: "/languages/malayalam" },
+                { label: "Hindi", href: "/languages/hindi" },
+                { label: "English", href: "/languages/english" },
+              ].map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="px-2.5 py-1.5 text-xs sm:text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent-muted)] rounded-xl transition-colors whitespace-nowrap"
+                  className="px-2.5 py-1.5 text-xs sm:text-sm font-semibold text-[var(--color-text-secondary)] hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-colors whitespace-nowrap"
                 >
                   {link.label}
                 </Link>
               ))}
               <Link
                 href="/admin/songs"
-                className="ml-2 px-3 py-1.5 text-xs font-bold bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)] rounded-xl transition-colors whitespace-nowrap shadow-sm"
+                className="ml-2 px-3 py-1.5 text-xs font-bold bg-orange-500 text-white hover:bg-orange-600 rounded-xl transition-colors whitespace-nowrap shadow-sm"
               >
                 + Admin
               </Link>
@@ -102,7 +109,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <p className="text-sm font-medium text-[var(--color-text-muted)]">
-                © 2025 WeWorship. Multilingual gospel lyrics & chords for the church.
+                © {new Date().getFullYear()} Worship Mount. Multilingual gospel lyrics & chords for the church.
               </p>
               <div className="flex items-center gap-4 text-sm font-medium text-[var(--color-text-muted)]">
                 <Link href="/about" className="hover:text-[var(--color-text-primary)] transition-colors">

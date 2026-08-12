@@ -33,8 +33,8 @@ export async function generateSongPPT(options: PPTOptions): Promise<Buffer> {
 
   const pptx = new pptxgen();
   pptx.layout = "LAYOUT_16x9";
-  pptx.author = "WeWorship";
-  pptx.company = "WeWorship";
+  pptx.author = "Worship Mount";
+  pptx.company = "Worship Mount";
   pptx.title = `${song.titleEn} — PowerPoint Deck`;
 
   // Find primary variant
@@ -232,7 +232,7 @@ export async function generateSongPPT(options: PPTOptions): Promise<Buffer> {
   // ═══════════════════════════════════════════════════════════
   const endSlide = pptx.addSlide();
   endSlide.background = { color: PALETTE.bg };
-  endSlide.addText("WeWorship", {
+  endSlide.addText("Worship Mount", {
     x: 0.5,
     y: 2.0,
     w: 9.0,

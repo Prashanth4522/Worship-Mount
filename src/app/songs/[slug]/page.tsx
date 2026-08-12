@@ -70,7 +70,7 @@ export async function generateMetadata({
       title: `${titleDisplay} — Gospel Lyrics & Chords`,
       description,
       url: canonicalUrl,
-      siteName: "WeWorship",
+      siteName: "Worship Mount",
       type: "article",
       publishedTime: song.createdAt.toISOString(),
       modifiedTime: song.updatedAt.toISOString(),

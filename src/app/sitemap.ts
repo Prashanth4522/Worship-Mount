@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { MetadataRoute } from "next";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://weworship.org";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://worshipmount.com";
 
 const LANGUAGES = ["kannada", "tamil", "telugu", "malayalam", "hindi", "english"];
 
