@@ -1,8 +1,10 @@
 import { SongForm } from "@/components/admin/SongForm";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
-  title: "Add New Song — Admin | WeWorship",
+  title: "Add New Song — Admin | Worship Mount",
 };
 
 export default function NewSongPage() {

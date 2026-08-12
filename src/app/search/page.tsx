@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import { SearchResultsClient } from "./SearchResultsClient";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Search Worship Songs — Worship Mount",
   description: "Search gospel song lyrics and chords in Kannada, Tamil, Malayalam, Telugu, Hindi, and English.",
