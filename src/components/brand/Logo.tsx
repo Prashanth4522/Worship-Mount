@@ -3,6 +3,7 @@ import React from "react";
 interface LogoProps {
   className?: string;
   size?: "sm" | "md" | "lg";
+  showText?: boolean;
 }
 
 export function WorshipMountLogo({ className = "", size = "md" }: LogoProps) {
