@@ -1,0 +1,122 @@
+// ─── Prisma Schema for WeWorship ───
+// Using SQLite for local development (easy zero-config setup).
+// Switch to PostgreSQL for production by changing provider.
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+// ─── Core Song Entity ───
+model Song {
+  id               String        @id @default(cuid())
+  slug             String        @unique
+  titleEn          String        @map("title_en")
+  originalLanguage String        @map("original_language") // KN, TA, ML, TE, HI, EN
+  originalKey      String        @map("original_key")
+  ccliOrSource     String?       @map("ccli_or_source")
+  status           String        @default("DRAFT") // DRAFT, PUBLISHED
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+
+  variants         SongVariant[]
+  songArtists      SongArtist[]
+  songCategories   SongCategory[]
+  tags             String        @default("") // comma-separated for SQLite compatibility
+
+  @@map("songs")
+}
+
+// ─── Variant = one language/script version ───
+model SongVariant {
+  id         String       @id @default(cuid())
+  songId     String       @map("song_id")
+  language   String       // ScriptMode: KN, KN_TRANSLIT, TA, TA_TRANSLIT, etc.
+  title      String
+  isPrimary  Boolean      @default(false) @map("is_primary")
+
+  song       Song         @relation(fields: [songId], references: [id], onDelete: Cascade)
+  sections   Section[]
+
+  @@unique([songId, language])
+  @@map("song_variants")
+}
+
+// ─── Structural sections ───
+model Section {
+  id        String      @id @default(cuid())
+  variantId String      @map("variant_id")
+  order     Int
+  type      String      // SectionType: VERSE, CHORUS, BRIDGE, etc.
+  label     String      // "Verse 1", "Chorus", etc.
+
+  variant   SongVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  lines     Line[]
+
+  @@map("sections")
+}
+
+// ─── Lines with token array (JSON) ───
+model Line {
+  id        String  @id @default(cuid())
+  sectionId String  @map("section_id")
+  order     Int
+
+  // tokens stored as JSON: [{ text: string, chord: string | null }]
+  tokens    String  // JSON string for SQLite
+
+  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  @@map("lines")
+}
+
+// ─── Artist ───
+model Artist {
+  id    String       @id @default(cuid())
+  name  String
+  slug  String       @unique
+  bio   String?
+  image String?
+
+  songArtists SongArtist[]
+
+  @@map("artists")
+}
+
+// ─── Category ───
+model Category {
+  id   String         @id @default(cuid())
+  name String         @unique
+  slug String         @unique
+
+  songCategories SongCategory[]
+
+  @@map("categories")
+}
+
+// ─── Many-to-many join tables ───
+model SongArtist {
+  songId   String @map("song_id")
+  artistId String @map("artist_id")
+
+  song   Song   @relation(fields: [songId], references: [id], onDelete: Cascade)
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@id([songId, artistId])
+  @@map("song_artists")
+}
+
+model SongCategory {
+  songId     String @map("song_id")
+  categoryId String @map("category_id")
+
+  song     Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([songId, categoryId])
+  @@map("song_categories")
+}
