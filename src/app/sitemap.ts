@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { MetadataRoute } from "next";
 
+export const dynamic = "force-dynamic";
+
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://worshipmount.com";
 
 const LANGUAGES = ["kannada", "tamil", "telugu", "malayalam", "hindi", "english"];

@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { AdminSongTable } from "@/components/admin/AdminSongTable";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Song Management — Admin | Worship Mount",
 };

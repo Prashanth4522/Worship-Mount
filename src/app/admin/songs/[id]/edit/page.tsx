@@ -4,8 +4,10 @@ import { SongForm } from "@/components/admin/SongForm";
 import { Token, ScriptMode } from "@/lib/types";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
-  title: "Edit Song — Admin | WeWorship",
+  title: "Edit Song — Admin | Worship Mount",
 };
 
 function parseTokens(tokensRaw: string | Token[]): Token[] {

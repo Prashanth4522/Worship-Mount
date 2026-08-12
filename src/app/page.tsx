@@ -4,6 +4,8 @@ import { SearchBar } from "@/components/search/SearchBar";
 import { SongCard } from "@/components/browse/SongCard";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Worship Mount — Gospel Lyrics & Chords",
   description:

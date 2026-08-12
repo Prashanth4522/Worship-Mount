@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 import { Metadata } from "next";
 import { SongCard } from "@/components/browse/SongCard";
 import Link from "next/link";
