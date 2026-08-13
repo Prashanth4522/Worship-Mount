@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 import { SearchBar } from "@/components/search/SearchBar";
 import { WorshipMountLogo } from "@/components/brand/Logo";
+import { cookies } from "next/headers";
+import { AdminNavControls } from "@/components/admin/AdminNavControls";
 import "./globals.css";
 
 const inter = Inter({
@@ -52,7 +54,10 @@ const NAV_LANGUAGES = [
   { label: "English", href: "/languages/english" },
 ];
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  const isAdmin = cookieStore.has("admin_token");
+
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased dark`}>
       <head>
@@ -92,12 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href="/admin/songs"
-                className="ml-2 px-3 py-1.5 text-xs font-bold bg-[#F05A28] text-white hover:bg-[#d94e20] rounded-xl transition-colors whitespace-nowrap shadow-sm"
-              >
-                + Admin
-              </Link>
+              {isAdmin && <AdminNavControls />}
             </div>
           </nav>
         </header>
