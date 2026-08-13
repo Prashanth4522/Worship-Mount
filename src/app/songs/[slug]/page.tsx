@@ -3,10 +3,19 @@ import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 import { Metadata } from "next";
+import Link from "next/link";
 import { SongViewer } from "@/components/song/SongViewer";
+import { SongCard } from "@/components/browse/SongCard";
 import { SongData, VariantData, SectionData, LineData, Token } from "@/lib/types";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://weworship.org";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://worshipmount.com";
+
+const LANGUAGE_CODE_TO_NAME: Record<string, string> = {
+  KN: "Kannada", TA: "Tamil", TE: "Telugu", ML: "Malayalam", HI: "Hindi", EN: "English",
+};
+const LANGUAGE_CODE_TO_SLUG: Record<string, string> = {
+  KN: "kannada", TA: "tamil", TE: "telugu", ML: "malayalam", HI: "hindi", EN: "english",
+};
 
 // ── Helper to parse tokens from DB storage ──
 function parseTokens(tokensRaw: string | Token[]): Token[] {
@@ -209,6 +218,50 @@ export default async function SongPage({
     url: `${BASE_URL}/songs/${slug}`,
   };
 
+  // BreadcrumbList schema (Home > Language > Song)
+  const langName = LANGUAGE_CODE_TO_NAME[song.originalLanguage] || song.originalLanguage;
+  const langSlug = LANGUAGE_CODE_TO_SLUG[song.originalLanguage] || song.originalLanguage.toLowerCase();
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: BASE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: `${langName} Songs`,
+        item: `${BASE_URL}/languages/${langSlug}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: primaryVariant?.title || song.titleEn,
+        item: `${BASE_URL}/songs/${slug}`,
+      },
+    ],
+  };
+
+  // Fetch related songs (same language, excluding current song)
+  const relatedSongs = await prisma.song.findMany({
+    where: {
+      originalLanguage: song.originalLanguage,
+      status: "PUBLISHED",
+      id: { not: song.id },
+    },
+    orderBy: { updatedAt: "desc" },
+    take: 6,
+    include: {
+      variants: true,
+      songArtists: { include: { artist: true } },
+      songCategories: { include: { category: true } },
+    },
+  });
+
   return (
     <>
       {/* Structured data for Google Lyrics Rich Snippets */}
@@ -216,7 +269,46 @@ export default async function SongPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
+      {/* Breadcrumb structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <SongViewer song={songData} />
+
+      {/* Related Songs — Internal Linking */}
+      {relatedSongs.length > 0 && (
+        <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <div className="border-t border-[var(--color-border-subtle)] pt-10">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-[var(--color-text-primary)]">
+                More {langName} Songs
+              </h2>
+              <Link
+                href={`/languages/${langSlug}`}
+                className="text-sm font-semibold text-[var(--color-accent)] hover:underline"
+              >
+                View All →
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {relatedSongs.map((rs) => (
+                <SongCard
+                  key={rs.id}
+                  id={rs.id}
+                  slug={rs.slug}
+                  titleEn={rs.titleEn}
+                  originalLanguage={rs.originalLanguage}
+                  originalKey={rs.originalKey}
+                  artists={rs.songArtists.map((sa) => sa.artist)}
+                  categories={rs.songCategories.map((sc) => sc.category)}
+                  variants={rs.variants}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </>
   );
 }

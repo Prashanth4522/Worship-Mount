@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import { Metadata } from "next";
 import { SongCard } from "@/components/browse/SongCard";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://weworship.org";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://worshipmount.com";
 
 export async function generateMetadata({
   params,
@@ -75,6 +75,21 @@ export default async function CategoryPage({
 
   return (
     <div className="animate-fade-in max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      {/* BreadcrumbList structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+              { "@type": "ListItem", position: 2, name: "Categories", item: `${BASE_URL}/categories` },
+              { "@type": "ListItem", position: 3, name: category.name, item: `${BASE_URL}/categories/${slug}` },
+            ],
+          }),
+        }}
+      />
       {/* ── Category Banner ── */}
       <div className="glass rounded-3xl p-8 mb-10 border border-[var(--color-secondary-muted)] bg-[var(--color-secondary-muted)]/20">
         <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-secondary)] mb-1 block">

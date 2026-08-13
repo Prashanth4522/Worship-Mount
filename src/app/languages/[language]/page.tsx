@@ -59,7 +59,7 @@ const LANGUAGE_CONFIGS: Record<string, LanguageConfig> = {
   },
 };
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://weworship.org";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://worshipmount.com";
 
 export async function generateMetadata({
   params,

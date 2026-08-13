@@ -13,8 +13,10 @@ const inter = Inter({
   display: "swap",
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://worshipmount.com";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://worshipmount.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Worship Mount — Gospel Lyrics & Chords",
     template: "%s | Worship Mount",
@@ -37,13 +39,41 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://worshipmount.com",
+    url: SITE_URL,
     siteName: "Worship Mount",
     title: "Worship Mount — Gospel Lyrics & Chords",
     description:
       "Multilingual Gospel lyrics, chords, transposers, and PowerPoint slide deck generator for worship leaders and church teams.",
   },
 };
+
+// Sitewide structured data (Organization + WebSite with SearchAction)
+const sitewideSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Worship Mount",
+    url: SITE_URL,
+    logo: `${SITE_URL}/icon.png`,
+    sameAs: [],
+    description:
+      "Multilingual gospel lyrics, chords, transposer, and PowerPoint slide generator for worship leaders and churches.",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Worship Mount",
+    url: SITE_URL,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+  },
+];
 
 const NAV_LANGUAGES = [
   { label: "Kannada", href: "/languages/kannada" },
@@ -71,6 +101,25 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           href="https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
+        {/* Sitewide structured data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(sitewideSchema) }}
+        />
+        {/* Google Analytics 4 — Replace G-XXXXXXXXXX with your Measurement ID */}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA_ID}');`,
+              }}
+            />
+          </>
+        )}
       </head>
       <body className="min-h-full flex flex-col bg-[var(--color-bg)] text-[var(--color-text)]">
         {/* ── Navigation ── */}
@@ -109,21 +158,48 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
         {/* ── Footer ── */}
         <footer className="border-t border-[var(--color-border-subtle)] mt-auto bg-[var(--color-surface)]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            {/* Top row: Language hubs + Tools + Info */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-secondary)] mb-3">Languages</h3>
+                <ul className="space-y-2 text-sm text-[var(--color-text-muted)]">
+                  <li><Link href="/languages/kannada" className="hover:text-[var(--color-text-primary)] transition-colors">Kannada</Link></li>
+                  <li><Link href="/languages/tamil" className="hover:text-[var(--color-text-primary)] transition-colors">Tamil</Link></li>
+                  <li><Link href="/languages/telugu" className="hover:text-[var(--color-text-primary)] transition-colors">Telugu</Link></li>
+                  <li><Link href="/languages/malayalam" className="hover:text-[var(--color-text-primary)] transition-colors">Malayalam</Link></li>
+                  <li><Link href="/languages/hindi" className="hover:text-[var(--color-text-primary)] transition-colors">Hindi</Link></li>
+                  <li><Link href="/languages/english" className="hover:text-[var(--color-text-primary)] transition-colors">English</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-secondary)] mb-3">Tools</h3>
+                <ul className="space-y-2 text-sm text-[var(--color-text-muted)]">
+                  <li><Link href="/tools/chord-transposer" className="hover:text-[var(--color-text-primary)] transition-colors">Chord Transposer</Link></li>
+                  <li><Link href="/tools/ppt-generator" className="hover:text-[var(--color-text-primary)] transition-colors">PPT Generator</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-secondary)] mb-3">Discover</h3>
+                <ul className="space-y-2 text-sm text-[var(--color-text-muted)]">
+                  <li><Link href="/search" className="hover:text-[var(--color-text-primary)] transition-colors">Search Songs</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-secondary)] mb-3">Company</h3>
+                <ul className="space-y-2 text-sm text-[var(--color-text-muted)]">
+                  <li><Link href="/about" className="hover:text-[var(--color-text-primary)] transition-colors">About</Link></li>
+                  <li><Link href="/contact" className="hover:text-[var(--color-text-primary)] transition-colors">Contact</Link></li>
+                </ul>
+              </div>
+            </div>
+            {/* Bottom row: copyright */}
+            <div className="border-t border-[var(--color-border-subtle)] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <WorshipMountLogo size="sm" showText={false} />
                 <p className="text-sm font-medium text-[var(--color-text-muted)]">
-                  © {new Date().getFullYear()} <strong className="text-[var(--color-text)]">Worship Mount</strong>. Multilingual gospel lyrics & chords for the church.
+                  © {new Date().getFullYear()} <strong className="text-[var(--color-text)]">Worship Mount</strong>. Multilingual gospel lyrics &amp; chords for the church.
                 </p>
-              </div>
-              <div className="flex items-center gap-4 text-sm font-medium text-[var(--color-text-muted)]">
-                <Link href="/about" className="hover:text-[var(--color-text-primary)] transition-colors">
-                  About
-                </Link>
-                <Link href="/contact" className="hover:text-[var(--color-text-primary)] transition-colors">
-                  Contact
-                </Link>
               </div>
             </div>
           </div>

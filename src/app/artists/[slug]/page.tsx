@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import { Metadata } from "next";
 import { SongCard } from "@/components/browse/SongCard";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://weworship.org";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://worshipmount.com";
 
 export async function generateMetadata({
   params,
@@ -75,6 +75,21 @@ export default async function ArtistPage({
 
   return (
     <div className="animate-fade-in max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      {/* BreadcrumbList structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+              { "@type": "ListItem", position: 2, name: "Artists", item: `${BASE_URL}/artists` },
+              { "@type": "ListItem", position: 3, name: artist.name, item: `${BASE_URL}/artists/${slug}` },
+            ],
+          }),
+        }}
+      />
       {/* ── Artist Banner ── */}
       <div className="glass rounded-3xl p-8 mb-10">
         <div className="flex items-center gap-4 mb-4">
