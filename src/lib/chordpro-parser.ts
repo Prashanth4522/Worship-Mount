@@ -130,7 +130,7 @@ export function parseChordProSong(text: string): ParsedSection[] {
   const lines = text.split('\n');
   
   let currentSection: ParsedSection | null = null;
-  let sectionCounter: Record<string, number> = {};
+  const sectionCounter: Record<string, number> = {};
   
   for (const rawLine of lines) {
     const line = rawLine.trim();

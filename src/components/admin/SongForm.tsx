@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { parseChordProSong } from "@/lib/chordpro-parser";
 import { LyricsRenderer } from "@/components/song/LyricsRenderer";
-import { ScriptMode, SCRIPT_MODE_LABELS, SectionData, LineData } from "@/lib/types";
+import { ScriptMode, SCRIPT_MODE_LABELS, SectionData } from "@/lib/types";
 
 interface ArtistOption {
   id: string;
@@ -129,15 +129,14 @@ export function SongForm({ initialData, isEditing = false }: SongFormProps) {
       }
     } catch (err) {
       console.error(err);
-    } finally {
-      setCreatingArtist(false);
+        setCreatingArtist(false);
     }
   };
 
   // ── Variant Helpers ──
   const activeVariant = variants[activeVariantIdx] || variants[0];
 
-  const updateActiveVariant = (field: keyof VariantForm, value: any) => {
+  const updateActiveVariant = (field: keyof VariantForm, value: string | boolean) => {
     setVariants((prev) =>
       prev.map((v, idx) => (idx === activeVariantIdx ? { ...v, [field]: value } : v))
     );
@@ -222,8 +221,12 @@ export function SongForm({ initialData, isEditing = false }: SongFormProps) {
 
       router.push("/admin/songs");
       router.refresh();
-    } catch (err: any) {
-      setError(err.message || "An error occurred");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An error occurred");
+      }
     } finally {
       setLoading(false);
     }

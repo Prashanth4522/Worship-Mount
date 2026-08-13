@@ -42,7 +42,7 @@ export function SearchResultsClient({ categories }: SearchResultsClientProps) {
   // Fetch results when search params or filters change
   useEffect(() => {
     let isMounted = true;
-    setIsLoading(true);
+    setTimeout(() => { if (isMounted) setIsLoading(true); }, 0);
 
     const params = new URLSearchParams();
     if (query) params.set("q", query);
@@ -126,7 +126,7 @@ export function SearchResultsClient({ categories }: SearchResultsClientProps) {
             No songs found
           </h3>
           <p className="text-sm text-[var(--color-text-secondary)] mb-6">
-            We couldn't find any songs matching your search criteria. Try adjusting your search query or filters.
+            We couldn&apos;t find any songs matching your search criteria. Try adjusting your search query or filters.
           </p>
           <button
             onClick={() => {

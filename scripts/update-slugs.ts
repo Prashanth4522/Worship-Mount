@@ -27,7 +27,7 @@ async function main() {
 
   for (const song of songs) {
     const artistNames = song.songArtists
-      .map((sa: any) => sa.artist.name)
+      .map((sa) => sa.artist.name)
       .join("-");
 
     let rawSlug = song.titleEn;

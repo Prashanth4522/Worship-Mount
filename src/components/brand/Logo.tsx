@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface LogoProps {
   className?: string;
@@ -16,11 +17,15 @@ export function WorshipMountLogo({ className = "", size = "md", showText = true 
   return (
     <div className={`flex items-center gap-3 select-none ${className}`}>
       {/* Header Logo Emblem */}
-      <img
-        src="/header-logo.png"
-        alt="Worship Mount Emblem"
-        className={`${iconSizes[size]} object-contain flex-shrink-0`}
-      />
+      <div className={`relative ${iconSizes[size]} flex-shrink-0`}>
+        <Image
+          src="/header-logo.png"
+          alt="Worship Mount Emblem"
+          fill
+          className="object-contain"
+          sizes="(max-width: 768px) 56px, 56px"
+        />
+      </div>
 
       {showText && (
         <span className="font-extrabold tracking-wider uppercase text-lg sm:text-xl font-sans text-[var(--color-text)]">

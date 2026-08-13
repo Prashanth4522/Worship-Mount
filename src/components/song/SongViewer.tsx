@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { SongData, VariantData, ScriptMode, SCRIPT_MODE_LABELS } from "@/lib/types";
+import { SongData, ScriptMode, SCRIPT_MODE_LABELS } from "@/lib/types";
 import { getTransposedKey, getUseFlats } from "@/lib/transpose";
 import { PPTMode } from "@/lib/ppt-generator";
 import { SongHeader } from "./SongHeader";
@@ -31,7 +31,7 @@ export function SongViewer({ song }: SongViewerProps) {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       if (params.get("view") === "lyrics") {
-        setShowChords(false);
+        setTimeout(() => setShowChords(false), 0);
       }
     }
   }, []);

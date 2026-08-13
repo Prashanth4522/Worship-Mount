@@ -330,3 +330,54 @@ body {
     font-size: 1.75rem;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   Print Styles (Chord Charts)
+   ═══════════════════════════════════════════════════════════ */
+
+@media print {
+  /* Hide navigation, footer, and interactive controls */
+  nav, 
+  footer,
+  .control-bar, /* Assuming a class for the control bar */
+  button,
+  .script-switcher {
+    display: none !important;
+  }
+
+  /* Reset background and text color for print */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+
+  /* Adjust section cards to remove borders/shadows and save ink */
+  .section-card,
+  .section-container {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-bottom: 2rem !important;
+    page-break-inside: avoid;
+  }
+
+  .chord-badge {
+    background: transparent !important;
+    border: none !important;
+    color: black !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    font-size: 11pt !important;
+  }
+
+  .token-text {
+    color: black !important;
+  }
+
+  .section-label {
+    color: black !important;
+  }
+}
+

@@ -28,6 +28,8 @@ model Song {
   songCategories   SongCategory[]
   tags             String        @default("") // comma-separated for SQLite compatibility
 
+  @@index([originalLanguage, status])
+  @@index([status, updatedAt(sort: Desc)])
   @@map("songs")
 }
 

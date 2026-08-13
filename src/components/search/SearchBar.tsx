@@ -35,8 +35,6 @@ export function SearchBar({
   // Debounced search fetch
   useEffect(() => {
     if (!query.trim() || query.length < 2) {
-      setResults([]);
-      setIsOpen(false);
       return;
     }
 
@@ -70,6 +68,17 @@ export function SearchBar({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setQuery(val);
+    if (!val.trim() || val.length < 2) {
+      setResults([]);
+      setIsOpen(false);
+    } else {
+      setIsOpen(true);
+    }
+  };
+
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
@@ -89,7 +98,7 @@ export function SearchBar({
         <div
           className={`glass rounded-2xl overflow-hidden shadow-2xl transition-all duration-200 ${
             isHero ? "p-1 sm:p-1.5" : "p-1"
-          } ${isOpen ? "ring-2 ring-[var(--color-accent)]" : ""}`}
+          } ${isOpen && results.length > 0 ? "ring-2 ring-[var(--color-accent)]" : ""}`}
         >
           <div className="flex items-center px-3.5 py-2 sm:py-2.5">
             {/* Search Icon */}
@@ -111,7 +120,7 @@ export function SearchBar({
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={handleQueryChange}
               onFocus={() => query.trim().length >= 2 && setIsOpen(true)}
               placeholder={placeholder}
               className={`w-full bg-transparent border-none outline-none text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] ml-3 ${
@@ -149,7 +158,7 @@ export function SearchBar({
       </form>
 
       {/* Autocomplete Dropdown */}
-      {isOpen && results.length > 0 && (
+      {isOpen && results.length > 0 && query.trim().length >= 2 && (
         <div className="absolute top-full left-0 right-0 mt-2 glass rounded-2xl p-2 shadow-2xl z-50 border border-[var(--color-border)] animate-fade-in max-h-80 overflow-y-auto">
           <div className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider px-3 py-1.5">
             Matching Songs
@@ -196,7 +205,7 @@ export function SearchBar({
             onClick={() => setIsOpen(false)}
             className="block text-center py-2.5 text-xs font-medium text-[var(--color-accent)] hover:underline border-t border-[var(--color-border-subtle)] mt-1"
           >
-            See all results for "{query}" →
+            See all results for &quot;{query}&quot; →
           </Link>
         </div>
       )}

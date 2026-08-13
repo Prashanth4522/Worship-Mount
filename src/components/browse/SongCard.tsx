@@ -74,7 +74,7 @@ export function SongCard({
         {/* Matching snippet (if from search) */}
         {matchingSnippet && (
           <p className="text-xs text-[var(--color-text-muted)] mt-3 italic line-clamp-2 bg-[var(--color-surface)] p-2 rounded-lg border border-[var(--color-border-subtle)]">
-            "...{matchingSnippet}..."
+            &quot;...{matchingSnippet}...&quot;
           </p>
         )}
       </div>
