@@ -31,8 +31,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    let artistNames = "";
+    if (Array.isArray(artistIds) && artistIds.length > 0) {
+      const artists = await prisma.artist.findMany({
+        where: { id: { in: artistIds } },
+        select: { name: true }
+      });
+      artistNames = artists.map(a => a.name).join("-");
+    }
+
     // Generate unique slug
-    let baseSlug = titleEn
+    let rawSlug = titleEn;
+    if (artistNames) {
+      rawSlug += `-${artistNames}`;
+    }
+
+    let baseSlug = rawSlug
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9]+/g, "-")
