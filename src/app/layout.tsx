@@ -91,6 +91,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased dark`}>
       <head>
+        <meta name="google-site-verification" content="OpNiMjksppI2aV1P5G44Ek6EgS_4HjFHoLtffxNxLEU" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
